@@ -1,7 +1,7 @@
 # MIAcode
 Some easy/useful code for medical image analysis.
 This repositority will be uplated continually.
-Code will be found in branch **maseter**.
+Code will be found in branch **master**.
 
 
 ## Code Organization
