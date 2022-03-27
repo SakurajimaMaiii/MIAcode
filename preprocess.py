@@ -101,6 +101,15 @@ def resample(img,old_spacing,new_spacing=(1.0,1.0,1.0),data_type='img'):
         raise NotImplementedError('data type is not implemented')
     return new_data
 
+def resample_nii(itkdata_path,data_type='img',new_space = (1.0,1.0,1.0)):
+    itkdata = sitk.ReadImage(itkdata_path)
+    data = sitk.GetArrayFromImage(itkdata)
+    old_space = itkdata.GetSpacing()
+    new_data = resample(data,old_space[::-1],new_space,data_type=data_type)
+    new_itkdata = sitk.GetImageFromArray(new_data)
+    new_itkdata = copy_geometry(new_itkdata,itkdata)
+    new_itkdata.SetSpacing(new_space)
+    return new_itkdata
 
 #crop
 
@@ -239,7 +248,21 @@ def random_flip(data,p=0.5):
 
     
     
+def to_one_hot(seg,all_seg_labels=None):
+    if all_seg_labels is None:
+        all_seg_labels = np.unique(seg)
+    result = np.zeros((len(all_seg_labels),*seg.shape),dtype=seg.dtype)
+    for i,l in enumerate(all_seg_labels):
+        result[i][seg==l] = 1
+    return result
     
+def onehot_to_mask(label):
+    '''one hot encoding to mask
+    input [C,*] 
+    output shape :[*]
+    '''
+    mask = np.argmax(label, axis=0).astype(np.uint8)
+    return mask
 
 
 
