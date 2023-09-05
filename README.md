@@ -1,7 +1,5 @@
 # MIAcode
 Some easy/useful code for medical image analysis.
-This repositority will be uplated continually.
-
 
 ## Code Organization
 ```
